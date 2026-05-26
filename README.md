@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SpendPilot — AI Spend Audit Tool
 
-## Getting Started
+> Stop overpaying for AI tools. Get a free, instant audit of your AI subscriptions.
 
-First, run the development server:
+**SpendPilot** is a free web app that audits AI tool spending for startups and engineering teams. Users input their current AI subscriptions — Cursor, GitHub Copilot, Claude, ChatGPT, Gemini, Windsurf, and API usage — and get instant, defensible recommendations to optimize spend. Built as a lead-generation asset for [Credex](https://credex.co), which sells discounted AI infrastructure credits.
+
+## Screenshots
+
+> _Add screenshots or a Loom recording here after deployment._
+
+## Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Run locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+
+# Lint
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000` after starting the dev server.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Live Demo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+> _Link to deployed URL on Vercel._
 
-## Learn More
+## Decisions
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Rule-based audit engine over AI
+The audit logic uses hardcoded rules, not an LLM. A finance person reviewing our recommendations should see specific numbers tracing to real pricing pages — not hallucinated suggestions. AI is only used for the optional executive summary, where creative synthesis adds value without risking accuracy.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Next.js App Router + TypeScript
+Chosen for server-side rendering (OG tag generation for shareable URLs), built-in API routes (lead capture, AI summary), and strong TypeScript support. The App Router enables per-page metadata for SEO without extra libraries.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. LocalStorage before Supabase
+Form state persists to LocalStorage immediately — no signup friction. This is a deliberate product choice: the assignment says "no login required to use the tool." Backend storage (Supabase) is reserved for lead capture after value is shown.
 
-## Deploy on Vercel
+### 4. Conservative savings estimates
+We never fabricate savings. If a user's stack is already optimal, we tell them honestly ("You're spending well"). Credex credit savings use a conservative 20% estimate even though real discounts can be higher. Trust is the product.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Dark mode as the only mode
+The target user is an engineering leader or developer. Dark mode isn't a preference toggle — it's the default experience, matched to tools they already use (VS Code, GitHub, Linear). This also makes the UI feel more premium and reduces visual clutter.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full technical writeup.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router), TypeScript
+- **Styling:** Tailwind CSS v4
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Deployment:** Vercel
+- **AI Summary:** OpenAI API (with graceful template fallback)
